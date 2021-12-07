@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  main:
+    environment:
+      ENV_VAR1: 'NOT_SET'
+    build:
+      context: .
+    command: |-
+      requestbot -c 1 -u https://google.com
+    image: requestbot
+    ports:
+      - "8080:8080"

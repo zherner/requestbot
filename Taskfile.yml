@@ -3,12 +3,19 @@ version: '3'
 tasks:
   default:
     cmds:
-      - task: build
+      - task: run
 
-  build:
+  build_bin:
     cmds:
       - go build -v ./...
+
+  run:
+    cmds:
+      - docker-compose up
 
   clean:
     cmds:
       - rm requestbot
+      - docker rmi -f requestbot
+    ignore_error: true
+

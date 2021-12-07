@@ -12,38 +12,38 @@ import (
 
 // makeCall will make an HTTP GET or POST to the specified url and print the response body.
 func makeCall(v, url, b string) {
-	if v == "GET" {
-		resp, err := http.Get(url)
-		if err != nil {
-			log.Fatalln(err)
-		}
+
+	readBody := func(resp *http.Response) []byte {
 		b, err := io.ReadAll(resp.Body)
 		if err != nil {
 			log.Fatalln(err)
 		}
-		fmt.Println(string(b))
+		return b
+	}
 
-	} else {
+	if v == "POST" {
 		resp, err := http.Post(url, "application/json", bytes.NewBuffer([]byte(b)))
 		if err != nil {
 			log.Fatalln(err)
 		}
 
-		b, err := io.ReadAll(resp.Body)
+		fmt.Println(string(readBody(resp)))
+	} else {
+		resp, err := http.Get(url)
 		if err != nil {
 			log.Fatalln(err)
 		}
-		fmt.Println(string(b))
-	}
 
+		fmt.Println(string(readBody(resp)))
+	}
 }
 
 // handleInputs parses commandline flags for usage
 func handleInputs() (int, string, string, string) {
-	c := flag.Int("c", 1, "The number of requests to make per second. Defaults to 1")
-	x := flag.String("x", "GET", "The HTTP verb to use. [GET|POST] Defaults to GET")
-	url := flag.String("u", "https://google.com", "The URL to hit. Defaults to https://google.com")
-	b := flag.String("b", "{}", "The JSON body to send with a -x POST. Defaults to {}")
+	c := flag.Int("c", 1, "The `number of requests` to make per second.")
+	x := flag.String("x", "GET", "The `HTTP verb` to use. [GET|POST].")
+	url := flag.String("u", "https://google.com", "The `URL to hit`.")
+	b := flag.String("b", "{}", "The `JSON body` to send with a -x POST.")
 
 	flag.Parse()
 

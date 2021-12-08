@@ -9,5 +9,3 @@ services:
     command: |-
       requestbot -c 1 -u https://google.com
     image: requestbot
-    ports:
-      - "8080:8080"
